@@ -50,6 +50,7 @@ resource "aws_instance" "ec2_instance" {
   ami           = "ami-0e2c8caa4b6378d8c" # Ubuntu Server 24.04 LTS (HVM) amd64
   instance_type = "t2.medium"
   key_name      = aws_key_pair.key_pair.key_name
+  user_data     = file("${path.module}/install.sh")
   security_groups = [
     aws_security_group.instance_sg.name
   ]
@@ -73,5 +74,5 @@ output "instance_public_ip" {
 }
 
 output "ssh_command" {
-  value = "ssh -i ${path.module}/my-key-pair.pem ec2-user@${aws_eip.ec2_eip.public_ip}"
+  value = "ssh -i ${path.module}/server.pem ec2-user@${aws_eip.ec2_eip.public_ip}"
 }
